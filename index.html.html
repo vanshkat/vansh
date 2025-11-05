@@ -1,0 +1,2045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCity | Complete Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --text: #333;
+            --text-light: #7f8c8d;
+            --police-blue: #1a237e;
+            --police-light: #283593;
+            --education-purple: #4a148c;
+            --education-light: #6a1b9a;
+            --emergency-red: #c0392b;
+            --emergency-dark: #8b0000;
+            --government-green: #1e8449;
+            --government-dark: #145a32;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--text);
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-police {
+            background: var(--police-blue);
+            color: white;
+        }
+
+        .btn-education {
+            background: var(--education-purple);
+            color: white;
+        }
+
+        .btn-emergency {
+            background: var(--emergency-red);
+            color: white;
+        }
+
+        .btn-government {
+            background: var(--government-green);
+            color: white;
+        }
+
+        /* Page Container */
+        .page-container {
+            display: none;
+        }
+
+        .page-container.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 3rem 2rem;
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80') center/cover;
+            color: white;
+            text-align: center;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        /* Emergency Hero Section */
+        .emergency-hero {
+            padding: 3rem 2rem;
+            background: linear-gradient(rgba(192, 57, 43, 0.9), rgba(139, 0, 0, 0.9)), url('https://images.unsplash.com/photo-1582719188397-342ec61b866e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80') center/cover;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        .emergency-hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .emergency-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+
+        .emergency-alert {
+            background: rgba(255,255,255,0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem auto;
+            max-width: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .emergency-alert i {
+            font-size: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Government Hero Section */
+        .government-hero {
+            padding: 3rem 2rem;
+            background: linear-gradient(rgba(30, 132, 73, 0.9), rgba(20, 90, 50, 0.9)), url('https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80') center/cover;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        .government-hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .government-hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+
+        /* Police Section */
+        .police-section {
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, var(--police-blue), var(--police-light));
+            color: white;
+            margin: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .police-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .police-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .police-logo i {
+            font-size: 2.5rem;
+        }
+
+        .police-logo h2 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .police-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .police-info {
+            padding-right: 1rem;
+        }
+
+        .police-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .police-info p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .police-map {
+            height: 300px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .police-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .police-services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .police-service {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .police-service:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .police-service i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Education Section */
+        .education-section {
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, var(--education-purple), var(--education-light));
+            color: white;
+            margin: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .education-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .education-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .education-logo i {
+            font-size: 2.5rem;
+        }
+
+        .education-logo h2 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .education-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .education-info {
+            padding-right: 1rem;
+        }
+
+        .education-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .education-info p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .education-services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .education-service {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .education-service:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .education-service i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Helpline Section */
+        .helpline-section {
+            padding: 3rem 2rem;
+            background: white;
+            margin: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .helpline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .helpline-card {
+            background: var(--light);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s;
+            border-left: 4px solid var(--emergency-red);
+        }
+
+        .helpline-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .helpline-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--emergency-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .helpline-info {
+            flex: 1;
+        }
+
+        .helpline-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .helpline-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--emergency-red);
+            margin-bottom: 0.5rem;
+        }
+
+        .helpline-description {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .call-button {
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .call-button:hover {
+            background: #219653;
+            transform: scale(1.1);
+        }
+
+        /* Emergency Categories */
+        .emergency-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+            border-top: 4px solid var(--emergency-red);
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--emergency-red);
+        }
+
+        .category-card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        /* Important Notice */
+        .important-notice {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin: 2rem 0;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .notice-icon {
+            color: #856404;
+            font-size: 1.5rem;
+        }
+
+        .notice-content h4 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+
+        .notice-content p {
+            color: #856404;
+        }
+
+        /* District Portal Section */
+        .district-portal {
+            padding: 3rem 2rem;
+            background: white;
+            margin: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .portal-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .portal-info {
+            padding-right: 1rem;
+        }
+
+        .portal-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--government-green);
+        }
+
+        .portal-info p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .portal-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .portal-feature {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s;
+            border-left: 4px solid var(--government-green);
+        }
+
+        .portal-feature:hover {
+            transform: translateY(-5px);
+        }
+
+        .portal-feature i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--government-green);
+        }
+
+        .website-frame-container {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            height: 600px;
+        }
+
+        .website-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* District Services */
+        .district-services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+            border-top: 4px solid var(--government-green);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--government-green);
+        }
+
+        .service-card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        /* Quick Links */
+        .quick-links {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .quick-links h3 {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .quick-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 1rem;
+            background: white;
+            border-radius: 4px;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.3s;
+        }
+
+        .quick-link:hover {
+            background: var(--government-green);
+            color: white;
+        }
+
+        .quick-link i {
+            font-size: 1.2rem;
+        }
+
+        /* Metrics Section */
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .metric-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Dashboard Preview */
+        .dashboard-preview {
+            padding: 2rem;
+            background: white;
+            margin: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .chart-card {
+            background: var(--light);
+            border-radius: 8px;
+            padding: 1.5rem;
+            height: 300px;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 2rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Tax Payment Form */
+        .tax-payment {
+            background: white;
+            margin: 2rem;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .bill-details {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+
+        .bill-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .bill-total {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 2rem 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #bdc3c7;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .police-content, .education-content, .portal-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .police-header, .education-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .website-frame-container {
+                height: 400px;
+            }
+            
+            .helpline-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .helpline-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .emergency-categories, .district-services {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-top">
+            <div class="logo">
+                <i class="fas fa-city"></i>
+                <h1>SmartCity Portal</h1>
+            </div>
+            <nav class="nav-links">
+                <a href="#" class="nav-link active" data-page="home">Home</a>
+                <a href="#" class="nav-link" data-page="seoni">Seoni District</a>
+                <a href="#" class="nav-link" data-page="helpline">Emergency Helpline</a>
+                <a href="#" class="nav-link" data-page="police">Police Services</a>
+                <a href="#" class="nav-link" data-page="education">Education</a>
+                <a href="#" class="nav-link" data-page="dashboard">Dashboard</a>
+                <a href="#" class="nav-link" data-page="tax">Pay Taxes</a>
+                <a href="#" class="nav-link" data-page="services">Services</a>
+            </nav>
+            <div class="auth-buttons">
+                <button class="btn btn-outline">Login</button>
+                <button class="btn btn-primary">Register</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <div id="home" class="page-container active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h2>One Portal. A Smarter City.</h2>
+            <p>Access real-time city data, pay your taxes online, and engage with civic services through our integrated smart city platform.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-success" onclick="showPage('dashboard')">
+                    <i class="fas fa-chart-bar"></i> View City Dashboard
+                </button>
+                <button class="btn btn-primary" onclick="showPage('tax')">
+                    <i class="fas fa-credit-card"></i> Pay Taxes Online
+                </button>
+                <button class="btn btn-police" onclick="showPage('police')">
+                    <i class="fas fa-shield-alt"></i> Police Services
+                </button>
+                <button class="btn btn-education" onclick="showPage('education')">
+                    <i class="fas fa-graduation-cap"></i> Education Portal
+                </button>
+                <button class="btn btn-emergency" onclick="showPage('helpline')">
+                    <i class="fas fa-phone-alt"></i> Emergency Helpline
+                </button>
+                <button class="btn btn-government" onclick="showPage('seoni')">
+                    <i class="fas fa-landmark"></i> Seoni District
+                </button>
+            </div>
+        </section>
+
+        <!-- Live Metrics -->
+        <section class="metrics">
+            <div class="metric-card">
+                <div class="metric-icon">
+                    <i class="fas fa-car"></i>
+                </div>
+                <div class="metric-value" id="traffic-index">72%</div>
+                <div class="metric-label">Traffic Flow</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">
+                    <i class="fas fa-wind"></i>
+                </div>
+                <div class="metric-value" id="air-quality">45</div>
+                <div class="metric-label">Air Quality Index</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="metric-value" id="power-usage">328 MW</div>
+                <div class="metric-label">Power Consumption</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">
+                    <i class="fas fa-tint"></i>
+                </div>
+                <div class="metric-value" id="water-usage">12.8M L</div>
+                <div class="metric-label">Water Usage Today</div>
+            </div>
+        </section>
+
+        <!-- Dashboard Preview -->
+        <section class="dashboard-preview">
+            <div class="section-header">
+                <h2>Live City Dashboard</h2>
+                <button class="btn btn-outline" onclick="showPage('dashboard')">View Full Dashboard</button>
+            </div>
+            <div class="charts-container">
+                <div class="chart-card">
+                    <canvas id="trafficChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <canvas id="utilityChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <canvas id="taxCollectionChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Seoni District Portal Page -->
+    <div id="seoni" class="page-container">
+        <!-- Government Hero Section -->
+        <section class="government-hero">
+            <h2>Seoni District Portal</h2>
+            <p>Official gateway to Seoni district administration services and information</p>
+            <button class="btn btn-outline" onclick="showPage('home')">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </button>
+        </section>
+
+        <!-- District Portal Section -->
+        <section class="district-portal">
+            <div class="section-header">
+                <h2>Seoni District Official Website</h2>
+                <a href="https://seoni.nic.in/en/" target="_blank" class="btn btn-government">
+                    <i class="fas fa-external-link-alt"></i> Visit Official Website
+                </a>
+            </div>
+
+            <div class="portal-content">
+                <div class="portal-info">
+                    <h3>About Seoni District</h3>
+                    <p>Seoni district is located in the southern part of Madhya Pradesh, known for its rich natural beauty, diverse wildlife, and cultural heritage. The district is part of the Satpura Range and is famous for the Pench Tiger Reserve.</p>
+                    
+                    <p>The district administration provides various citizen services, governance information, and development initiatives through its official portal.</p>
+                    
+                    <div class="portal-features">
+                        <div class="portal-feature">
+                            <i class="fas fa-users"></i>
+                            <h4>Citizen Services</h4>
+                            <p>Access to various public services and certificates</p>
+                        </div>
+                        <div class="portal-feature">
+                            <i class="fas fa-chart-line"></i>
+                            <h4>Development</h4>
+                            <p>Information about district development projects</p>
+                        </div>
+                        <div class="portal-feature">
+                            <i class="fas fa-newspaper"></i>
+                            <h4>Notifications</h4>
+                            <p>Official announcements and circulars</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="website-frame-container">
+                    <iframe src="https://seoni.nic.in/en/" class="website-frame" title="Seoni District Official Website"></iframe>
+                </div>
+            </div>
+
+            <!-- District Services -->
+            <div class="section-header" style="margin-top: 3rem;">
+                <h2>District Services</h2>
+            </div>
+            <div class="district-services">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3>Certificates</h3>
+                    <p>Apply for birth, death, caste, income and other certificates</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3>Property Services</h3>
+                    <p>Property registration, land records and mutation services</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <h3>Social Welfare</h3>
+                    <p>Access to various government schemes and benefits</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-tractor"></i>
+                    </div>
+                    <h3>Agriculture</h3>
+                    <p>Agricultural schemes, subsidies and farmer services</p>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="quick-links">
+                <h3>Quick Links</h3>
+                <div class="links-grid">
+                    <a href="#" class="quick-link">
+                        <i class="fas fa-download"></i>
+                        <span>Download Forms</span>
+                    </a>
+                    <a href="#" class="quick-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Holiday List</span>
+                    </a>
+                    <a href="#" class="quick-link">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Office Locations</span>
+                    </a>
+                    <a href="#" class="quick-link">
+                        <i class="fas fa-phone-alt"></i>
+                        <span>Contact Directory</span>
+                    </a>
+                    <a href="#" class="quick-link">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Administration</span>
+                    </a>
+                    <a href="#" class="quick-link">
+                        <i class="fas fa-gavel"></i>
+                        <span>RTI Services</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+     <!-- District Information -->
+                <div class="section-header" style="margin-top: 3rem;">
+                    <h2>District Information</h2>
+                </div>
+                <div class="portal-info">
+                    <div class="portal-features">
+                        <div class="portal-feature">
+                            <i class="fas fa-map"></i>
+                            <h4>Geography</h4>
+                            <p>Located in southern MP, part of Satpura Range</p>
+                        </div>
+                        <div class="portal-feature">
+                            <i class="fas fa-users"></i>
+                            <h4>Population</h4>
+                            <p>13.78 Lakhs (2011 Census)</p>
+                        </div>
+                        <div class="portal-feature">
+                            <i class="fas fa-mountain"></i>
+                            <h4>Area</h4>
+                            <p>8,758 square kilometers</p>
+                        </div>
+                        <div class="portal-feature">
+                            <i class="fas fa-tree"></i>
+                            <h4>Forest Cover</h4>
+                            <p>Famous for Pench Tiger Reserve</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- Emergency Helpline Page -->
+    <div id="helpline" class="page-container">
+        <!-- Emergency Hero Section -->
+        <section class="emergency-hero">
+            <h2>Seoni Emergency Helplines</h2>
+            <p>Immediate assistance when you need it most. Save these numbers for emergencies.</p>
+            <div class="emergency-alert">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>For life-threatening emergencies, always call Police (100) or Ambulance (108) first</p>
+            </div>
+            <button class="btn btn-outline" onclick="showPage('home')">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </button>
+        </section>
+
+        <!-- Important Notice -->
+        <div class="important-notice">
+            <div class="notice-icon">
+                <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="notice-content">
+                <h4>NIC Service Desk Information</h4>
+                <p>The National Informatics Centre (NIC) Service Desk provides technical support for government digital services. For issues with this portal or other government digital platforms, contact the NIC Service Desk.</p>
+            </div>
+        </div>
+
+        <!-- Helpline Section -->
+        <section class="helpline-section">
+            <div class="section-header">
+                <h2>Emergency Contact Numbers</h2>
+                <div>
+                    <button class="btn btn-primary" onclick="printHelpline()">
+                        <i class="fas fa-print"></i> Print Helpline
+                    </button>
+                    <button class="btn btn-success" onclick="saveContacts()">
+                        <i class="fas fa-save"></i> Save Contacts
+                    </button>
+                </div>
+            </div>
+
+            <div class="helpline-grid">
+                <!-- Emergency Services -->
+                <div class="helpline-card">
+                    <div class="helpline-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="helpline-info">
+                        <div class="helpline-name">Police</div>
+                        <div class="helpline-number">100</div>
+                        <div class="helpline-description">For all police emergencies</div>
+                    </div>
+                    <div class="call-button" onclick="simulateCall('100')">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                </div>
+
+                <div class="helpline-card">
+                    <div class="helpline-icon">
+                        <i class="fas fa-ambulance"></i>
+                    </div>
+                    <div class="helpline-info">
+                        <div class="helpline-name">Ambulance</div>
+                        <div class="helpline-number">108</div>
+                        <div class="helpline-description">Medical emergencies and ambulance service</div>
+                    </div>
+                    <div class="call-button" onclick="simulateCall('108')">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                </div>
+
+                <div class="helpline-card">
+                    <div class="helpline-icon">
+                        <i class="fas fa-fire-extinguisher"></i>
+                    </div>
+                    <div class="helpline-info">
+                        <div class="helpline-name">Fire Department</div>
+                        <div class="helpline-number">1018</div>
+                        <div class="helpline-description">Fire emergencies and rescue operations</div>
+                    </div>
+                    <div class="call-button" onclick="simulateCall('1018')">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                </div>
+
+                <!-- Specialized Helplines -->
+                <div class="helpline-card">
+                    <div class="helpline-icon">
+                        <i class="fas fa-female"></i>
+                    </div>
+                    <div class="helpline-info">
+                        <div class="helpline-name">Women Helpline</div>
+                        <div class="helpline-number">1091</div>
+                        <div class="helpline-description">Support for women in distress</div>
+                    </div>
+                    <div class="call-button" onclick="simulateCall('1091')">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                </div>
+
+                <div class="helpline-card">
+                    <div class="helpline-icon">
+                        <i class="fas fa-child"></i>
+                    </div>
+                    <div class="helpline-info">
+                        <div class="helpline-name">Child Helpline</div>
+                        <div class="helpline-number">1098</div>
+                        <div class="helpline-description">Help for children in need of care and protection</div>
+                    </div>
+                    <div class="call-button" onclick="simulateCall('1098')">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                </div>
+
+                <div class="helpline-card">
+                    <div class="helpline-icon">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <div class="helpline-info">
+                        <div class="helpline-name">Crime Stopper</div>
+                        <div class="helpline-number">1090</div>
+                        <div class="helpline-description">Report crimes anonymously</div>
+                    </div>
+                    <div class="call-button" onclick="simulateCall('1090')">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                </div>
+
+                <!-- Government Helplines -->
+                <div class="helpline-card">
+                    <div class="helpline-icon">
+                        <i class="fas fa-phone-volume"></i>
+                    </div>
+                    <div class="helpline-info">
+                        <div class="helpline-name">NIC Service Desk</div>
+                        <div class="helpline-number">1800111555</div>
+                        <div class="helpline-description">Technical support for government digital services</div>
+                    </div>
+                    <div class="call-button" onclick="simulateCall('1800111555')">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                </div>
+
+                <div class="helpline-card">
+                    <div class="helpline-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="helpline-info">
+                        <div class="helpline-name">CM Helpline</div>
+                        <div class="helpline-number">181</div>
+                        <div class="helpline-description">Chief Minister's public grievance cell</div>
+                    </div>
+                    <div class="call-button" onclick="simulateCall('181')">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                </div>
+
+                <div class="helpline-card">
+                    <div class="helpline-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="helpline-info">
+                        <div class="helpline-name">Citizen's Call Center</div>
+                        <div class="helpline-number">155300</div>
+                        <div class="helpline-description">General citizen assistance and information</div>
+                    </div>
+                    <div class="call-button" onclick="simulateCall('155300')">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                </div>
+
+                <!-- Additional Helplines -->
+                <div class="helpline-card">
+                    <div class="helpline-icon">
+                        <i class="fas fa-landmark"></i>
+                    </div>
+                    <div class="helpline-info">
+                        <div class="helpline-name">Election Commission</div>
+                        <div class="helpline-number">1950</div>
+                        <div class="helpline-description">Election-related complaints and information</div>
+                    </div>
+                    <div class="call-button" onclick="simulateCall('1950')">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                </div>
+
+                <div class="helpline-card">
+                    <div class="helpline-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="helpline-info">
+                        <div class="helpline-name">Police Control Room</div>
+                        <div class="helpline-number">07692220955</div>
+                        <div class="helpline-description">Seoni district police control room</div>
+                    </div>
+                    <div class="call-button" onclick="simulateCall('07692220955')">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emergency Categories -->
+            <div class="section-header" style="margin-top: 3rem;">
+                <h2>Emergency Categories</h2>
+            </div>
+            <div class="emergency-categories">
+                <div class="category-card" onclick="showPage('police')">
+                    <div class="category-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Police Services</h3>
+                    <p>File complaints, emergency contacts, and police verification services</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>Medical Emergency</h3>
+                    <p>Ambulance services, hospital information, and medical assistance</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3>Fire & Rescue</h3>
+                    <p>Fire emergencies, rescue operations, and disaster response</p>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3>Social Support</h3>
+                    <p>Women, child, and citizen support services and helplines</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Police Services Page -->
+    <div id="police" class="page-container">
+        <section class="police-section">
+            <div class="police-header">
+                <div class="police-logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <h2>Seoni MP Police</h2>
+                </div>
+                <a href="https://seoni.mppolice.gov.in/" target="_blank" class="btn btn-outline">
+                    <i class="fas fa-external-link-alt"></i> Visit Official Website
+                </a>
+            </div>
+            
+            <div class="police-content">
+                <div class="police-info">
+                    <h3>Ensuring Safety & Security in Seoni District</h3>
+                    <p>The Seoni Madhya Pradesh Police Department is committed to maintaining law and order, preventing crime, and ensuring the safety of all citizens. Our dedicated team works round the clock to serve and protect the community.</p>
+                    
+                    <div class="police-services">
+                        <div class="police-service">
+                            <i class="fas fa-phone-alt"></i>
+                            <h4>Emergency</h4>
+                            <p>Dial 100 for immediate police assistance</p>
+                        </div>
+                        <div class="police-service">
+                            <i class="fas fa-file-alt"></i>
+                            <h4>File Complaint</h4>
+                            <p>Online FIR and complaint registration</p>
+                        </div>
+                        <div class="police-service">
+                            <i class="fas fa-user-check"></i>
+                            <h4>Verification</h4>
+                            <p>Background and tenant verification services</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="police-map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14869.17782983936!2d79.52857894999999!3d21.28721275!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a2a4f8d2e2f2f2f%3A0x2f2f2f2f2f2f2f2f!2sSeoni%2C%20Madhya%20Pradesh%20480661!5e0!3m2!1sen!2sin!4v1234567890123!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Education Page -->
+    <div id="education" class="page-container">
+        <section class="education-section">
+            <div class="education-header">
+                <div class="education-logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h2>RGPV Diploma Portal</h2>
+                </div>
+                <a href="https://www.rgpvdiploma.in/" target="_blank" class="btn btn-outline">
+                    <i class="fas fa-external-link-alt"></i> Visit Official Website
+                </a>
+            </div>
+            
+            <div class="education-content">
+                <div class="education-info">
+                    <h3>Rajiv Gandhi Proudyogiki Vishwavidyalaya (RGPV)</h3>
+                    <p>RGPV is a premier technical university in Madhya Pradesh offering diploma, undergraduate, and postgraduate programs in various engineering and technology disciplines. The diploma portal provides comprehensive information for diploma students.</p>
+                    
+                    <div class="education-services">
+                        <div class="education-service">
+                            <i class="fas fa-file-alt"></i>
+                            <h4>Results</h4>
+                            <p>Check your diploma exam results online</p>
+                        </div>
+                        <div class="education-service">
+                            <i class="fas fa-calendar-alt"></i>
+                            <h4>Time Table</h4>
+                            <p>Download exam schedules and timetables</p>
+                        </div>
+                        <div class="education-service">
+                            <i class="fas fa-book"></i>
+                            <h4>Syllabus</h4>
+                            <p>Access course curriculum and syllabus</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>RGPV Diploma Portal</h3>
+                    <iframe src="https://www.rgpvdiploma.in/" class="website-frame" title="RGPV Diploma Portal"></iframe>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboard" class="page-container">
+        <section class="dashboard-preview">
+            <div class="section-header">
+                <h2>Complete City Dashboard</h2>
+                <button class="btn btn-outline" onclick="showPage('home')">Back to Home</button>
+            </div>
+            <div class="charts-container">
+                <div class="chart-card">
+                    <canvas id="fullTrafficChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <canvas id="fullUtilityChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <canvas id="fullTaxCollectionChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <canvas id="crimeChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <canvas id="educationChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <canvas id="healthChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Tax Payment Page -->
+    <div id="tax" class="page-container">
+        <section class="tax-payment">
+            <div class="section-header">
+                <h2>Smart Tax Payment</h2>
+                <div>
+                    <button class="btn btn-outline">View History</button>
+                    <button class="btn btn-primary">Auto-Pay Setup</button>
+                    <button class="btn btn-outline" onclick="showPage('home')">Back to Home</button>
+                </div>
+            </div>
+            
+            <div class="payment-form">
+                <div class="form-group">
+                    <label for="tax-type">Select Tax Type</label>
+                    <select class="form-control" id="tax-type">
+                        <option value="">-- Select Tax Type --</option>
+                        <option value="property">Property Tax</option>
+                        <option value="water">Water Tax</option>
+                        <option value="commercial">Commercial Tax</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="property-id">Property/Connection ID</label>
+                    <input type="text" class="form-control" id="property-id" placeholder="Enter your Property ID or Water Connection ID">
+                </div>
+                
+                <button class="btn btn-success" onclick="fetchBill()">
+                    <i class="fas fa-search"></i> Fetch Bill Details
+                </button>
+                
+                <div class="bill-details" id="bill-details" style="display: none;">
+                    <h3>Bill Details</h3>
+                    <div class="bill-row">
+                        <span>Base Tax</span>
+                        <span>₹ 1,200.00</span>
+                    </div>
+                    <div class="bill-row">
+                        <span>Penalty (if any)</span>
+                        <span>₹ 0.00</span>
+                    </div>
+                    <div class="bill-row">
+                        <span>Interest</span>
+                        <span>₹ 0.00</span>
+                    </div>
+                    <div class="bill-row bill-total">
+                        <span>Total Amount Due</span>
+                        <span>₹ 1,200.00</span>
+                    </div>
+                    
+                    <button class="btn btn-primary" style="margin-top: 1.5rem; width: 100%;">
+                        <i class="fas fa-credit-card"></i> Pay Now
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Services Page -->
+    <div id="services" class="page-container">
+        <section class="services">
+            <div class="section-header">
+                <h2>All Citizen Services</h2>
+                <button class="btn btn-outline" onclick="showPage('home')">Back to Home</button>
+            </div>
+            <div class="services-grid">
+                <div class="service-card" onclick="showPage('tax')">
+                    <div class="service-icon">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <h3>Tax Services</h3>
+                    <p>Pay taxes, view history and download receipts</p>
+                </div>
+                <div class="service-card" onclick="showPage('police')">
+                    <div class="service-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Police Services</h3>
+                    <p>File complaints, emergency contacts, verifications</p>
+                </div>
+                <div class="service-card" onclick="showPage('education')">
+                    <div class="service-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Education</h3>
+                    <p>Access educational resources and portals</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3>Certificates</h3>
+                    <p>Apply for birth, death and other certificates online</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-comment-dots"></i>
+                    </div>
+                    <h3>Grievance Portal</h3>
+                    <p>Lodge complaints and track their resolution status</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3>Application Tracking</h3>
+                    <p>Track the status of your submitted applications in real-time</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3>Housing Services</h3>
+                    <p>Apply for housing schemes and subsidies</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>Health Services</h3>
+                    <p>Book appointments and access health records</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>SmartCity Portal</h3>
+                <p>Your one-stop solution for all civic services and smart city information.</p>
+            </div>
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="showPage('home')">Home</a></li>
+                    <li><a href="#" onclick="showPage('seoni')">Seoni District</a></li>
+                    <li><a href="#" onclick="showPage('helpline')">Emergency Helpline</a></li>
+                    <li><a href="#" onclick="showPage('police')">Police Services</a></li>
+                    <li><a href="#" onclick="showPage('education')">Education</a></li>
+                    <li><a href="#" onclick="showPage('dashboard')">Dashboard</a></li>
+                    <li><a href="#" onclick="showPage('tax')">Pay Taxes</a></li>
+                    <li><a href="#" onclick="showPage('services')">Services</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Emergency Contacts</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-phone"></i> Police: 100</li>
+                    <li><i class="fas fa-ambulance"></i> Ambulance: 108</li>
+                    <li><i class="fas fa-fire-extinguisher"></i> Fire: 1018</li>
+                    <li><i class="fas fa-female"></i> Women Helpline: 1091</li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Info</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-phone"></i> 1800-123-4567</li>
+                    <li><i class="fas fa-envelope"></i> support@smartcity.gov.in</li>
+                    <li><i class="fas fa-map-marker-alt"></i> City Municipal Corporation, Smart City</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 SmartCity Portal. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Page Navigation
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page-container').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update navigation links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === pageId) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // Initialize charts if needed
+            if (pageId === 'dashboard') {
+                initializeFullDashboardCharts();
+            }
+        }
+
+        // Initialize navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click events to navigation links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page');
+                    showPage(pageId);
+                });
+            });
+            
+            // Initialize home page charts
+            initializeHomeCharts();
+        });
+
+        // Initialize Home Page Charts
+        function initializeHomeCharts() {
+            // Traffic Chart
+            const trafficCtx = document.getElementById('trafficChart').getContext('2d');
+            const trafficChart = new Chart(trafficCtx, {
+                type: 'line',
+                data: {
+                    labels: ['6AM', '9AM', '12PM', '3PM', '6PM', '9PM'],
+                    datasets: [{
+                        label: 'Traffic Congestion (%)',
+                        data: [35, 75, 60, 45, 80, 40],
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Traffic Flow Today'
+                        }
+                    }
+                }
+            });
+
+            // Utility Chart
+            const utilityCtx = document.getElementById('utilityChart').getContext('2d');
+            const utilityChart = new Chart(utilityCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Water', 'Electricity', 'Waste', 'Public Transport'],
+                    datasets: [{
+                        label: 'Usage Index',
+                        data: [75, 82, 60, 78],
+                        backgroundColor: [
+                            '#3498db',
+                            '#f39c12',
+                            '#27ae60',
+                            '#9b59b6'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'City Utilities Status'
+                        }
+                    }
+                }
+            });
+
+            // Tax Collection Chart
+            const taxCtx = document.getElementById('taxCollectionChart').getContext('2d');
+            const taxChart = new Chart(taxCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Property Tax', 'Water Tax', 'Commercial Tax', 'Other Taxes'],
+                    datasets: [{
+                        data: [45, 25, 20, 10],
+                        backgroundColor: [
+                            '#2ecc71',
+                            '#3498db',
+                            '#e74c3c',
+                            '#f39c12'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Tax Collection Distribution'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize Full Dashboard Charts
+        function initializeFullDashboardCharts() {
+            // Full Traffic Chart
+            const fullTrafficCtx = document.getElementById('fullTrafficChart').getContext('2d');
+            const fullTrafficChart = new Chart(fullTrafficCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Traffic Congestion (%)',
+                        data: [65, 75, 70, 80, 60, 50, 45],
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Weekly Traffic Analysis'
+                        }
+                    }
+                }
+            });
+
+            // Full Utility Chart
+            const fullUtilityCtx = document.getElementById('fullUtilityChart').getContext('2d');
+            const fullUtilityChart = new Chart(fullUtilityCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Water Usage (ML)',
+                        data: [120, 150, 180, 140, 160, 190],
+                        backgroundColor: '#3498db'
+                    }, {
+                        label: 'Power Usage (MW)',
+                        data: [300, 320, 310, 330, 340, 350],
+                        backgroundColor: '#f39c12'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Monthly Utilities Consumption'
+                        }
+                    }
+                }
+            });
+
+            // Full Tax Collection Chart
+            const fullTaxCtx = document.getElementById('fullTaxCollectionChart').getContext('2d');
+            const fullTaxChart = new Chart(fullTaxCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Property Tax', 'Water Tax', 'Commercial Tax', 'Other Taxes'],
+                    datasets: [{
+                        data: [45, 25, 20, 10],
+                        backgroundColor: [
+                            '#2ecc71',
+                            '#3498db',
+                            '#e74c3c',
+                            '#f39c12'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Tax Collection Distribution'
+                        }
+                    }
+                }
+            });
+
+            // Crime Chart
+            const crimeCtx = document.getElementById('crimeChart').getContext('2d');
+            const crimeChart = new Chart(crimeCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Theft', 'Burglary', 'Assault', 'Fraud', 'Vandalism'],
+                    datasets: [{
+                        label: 'Incidents Reported',
+                        data: [12, 19, 8, 15, 7],
+                        backgroundColor: '#9b59b6'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Crime Statistics (Monthly)'
+                        }
+                    }
+                }
+            });
+
+            // Education Chart
+            const educationCtx = document.getElementById('educationChart').getContext('2d');
+            const educationChart = new Chart(educationCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Schools', 'Colleges', 'Universities', 'Vocational'],
+                    datasets: [{
+                        data: [40, 25, 15, 20],
+                        backgroundColor: [
+                            '#3498db',
+                            '#2ecc71',
+                            '#e74c3c',
+                            '#f39c12'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Educational Institutions Distribution'
+                        }
+                    }
+                }
+            });
+
+            // Health Chart
+            const healthCtx = document.getElementById('healthChart').getContext('2d');
+            const healthChart = new Chart(healthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Hospital Admissions',
+                        data: [120, 150, 130, 170, 160, 190],
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Healthcare Statistics'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Simulate live data updates
+        function updateMetrics() {
+            // In a real application, this would fetch data from an API
+            document.getElementById('traffic-index').textContent = 
+                (65 + Math.floor(Math.random() * 10)) + '%';
+            document.getElementById('air-quality').textContent = 
+                (40 + Math.floor(Math.random() * 15));
+            document.getElementById('power-usage').textContent = 
+                (320 + Math.floor(Math.random() * 20)) + ' MW';
+            document.getElementById('water-usage').textContent = 
+                (12.5 + (Math.random() * 0.6)).toFixed(1) + 'M L';
+        }
+
+        // Update metrics every 10 seconds
+        setInterval(updateMetrics, 10000);
+
+        // Show bill details when user searches
+        function fetchBill() {
+            const taxType = document.getElementById('tax-type').value;
+            const propertyId = document.getElementById('property-id').value;
+            
+            if (!taxType || !propertyId) {
+                alert('Please select tax type and enter your property ID');
+                return;
+            }
+            
+            // In a real app, this would make an API call
+            document.getElementById('bill-details').style.display = 'block';
+        }
+
+        // Helpline Page Functions
+        function simulateCall(number) {
+            alert(`Calling ${number}...\n\nNote: This is a simulation. In a real application, this would initiate a phone call.`);
+        }
+
+        function printHelpline() {
+            alert("Printing helpline information...\n\nIn a real application, this would open the print dialog with helpline details.");
+            // In a real implementation, you would use window.print() with specific styling
+        }
+
+        function saveContacts() {
+            alert("Saving emergency contacts to your device...\n\nIn a real application, this would download a vCard file with all emergency contacts.");
+        }
+    </script>
+</body>
+</html>
